@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Direction map</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <style type="text/css">
+*{
+	margin: 0;
+	padding: 0;
+
+}
+body{
+	
+	
+    left: 0;
+    top: 0;
+    width:100%;
+  
+   
+	background-color: white;
+}
+b{
+    color:tomato;
+}
+
+
+        #main-panel {
+            font-family: "Roboto", "sans-serif";
+            padding-left: 10px;
+			
+        }
+		#main-panel b{
+    font-size: 23px;
+	padding: 1px;
+}
+
+        #main-panel select,
+        #main-panel input {
+            font-size: 20px;
+            padding: 7px;
+            border-radius: 10px;
+			
+			background-color:white;
+        
+            
+            margin: 10px 0;
+        }
+
+		#main-panel .check{
+			text-align: center;
+			margin-top: 10%;
+			width: 100%;
+			
+		}
+
+        #main-panel select {
+            width: 110%;
+        }
+
+        #main-panel i {
+            font-size: 12px;
+        }
+
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            float: right;
+            width: 70%;
+            height: 75%;
+			margin-top: 50px;
+            margin-left: 10px;
+            margin-right: 50px;
+			border-radius: 25px;
+			box-shadow: 1px 1px 20px rgba(0, 0, 0, 0.493);
+        }
+
+        #main-panel {
+            margin: 20px;
+            border-width: 2px;
+            width: 20%;
+            height: 400px;
+            float: left;
+            text-align: left;
+            padding-top: 0;
+        }
+
+        #directions-route {
+            margin-top: 20px;
+            background-color: tomato;
+            color:white;
+            padding: 20px;
+			margin-top: 65%;
+			width: 462%;
+			border-radius: 25px;
+			box-shadow: 1px 1px 20px rgba(0, 0, 0, 0.493);
+            
+        }
+        .button{
+            
+            text-align: center;
+            height:40px;
+            width: 200px;
+            display: block;
+            line-height: 40px;
+            border-radius: 30px;
+            margin-top: 1%;
+            margin-left: 83.5%;
+            font-size: 18px;
+            border:2px solid tomato;
+            margin-bottom: -30px;
+            
+            
+        }
+       
+        
+        .button a {
+            text-decoration: none;
+            color:tomato;
+            font-family: roboto;
+            font-weight: bolder;
+
+           
+        }
+        #submit_btn{
+            border:2px solid tomato;
+            color: tomato;
+            font-weight: bolder;
+            cursor: pointer;
+        
+        }
+        #submit_btn:hover{
+            background-color: tomato;
+            color: white;
+        }
+
+       
+    </style>
+    <script>
+        function initMap() {
+            const directionsService = new google.maps.DirectionsService();
+            const directionsRenderer = new google.maps.DirectionsRenderer();
+            const map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 6,
+                center: { lat: 22.611055454616626, lng: 70.72304745531825 },
+            });
+            directionsRenderer.setMap(map);
+            document.getElementById("submit_btn").addEventListener("click", () => {
+                calculateDisplayRoutes(directionsService, directionsRenderer);
+            });
+        }
+
+        function calculateDisplayRoutes(directionsService, directionsRenderer) {
+            const waypts = [];
+            const checkboxArray = document.getElementById("waypoints");
+
+            for (let i = 0; i < checkboxArray.length; i++) {
+            if (checkboxArray.options[i].selected) {
+             waypts.push({
+             location: checkboxArray[i].value,
+             stopover: true,
+              });
+                }
+             }
+
+            directionsService.route({
+                origin: document.getElementById("start").value,
+                destination: document.getElementById("end").value,
+                waypoints: waypts,
+                optimizeWaypoints: true,
+                travelMode: google.maps.TravelMode.DRIVING,
+            },(response, status) => {
+                if (status === "OK" && response) {
+                    directionsRenderer.setDirections(response);
+                    const route = response.routes[0];
+                    const summaryPanel = document.getElementById("directions-route");
+                    summaryPanel.innerHTML = "";
+
+                    // For each route, display summary information.
+                    for (let i = 0; i < route.legs.length; i++) {
+                        const routeSegment = i + 1;
+                        summaryPanel.innerHTML +=
+                        "<b>Route Segment: " + routeSegment + "</b><br>";
+                        summaryPanel.innerHTML += route.legs[i].start_address + " to ";
+                        summaryPanel.innerHTML += route.legs[i].end_address + "<br>";
+                        summaryPanel.innerHTML +=
+                        route.legs[i].distance.text + "<br><br>";
+                    }
+                } else {
+                    window.alert("Directions request failed due to " + status);
+                }
+            }
+        );
+    }
+    </script>
+  </head>
+  <body>
+    <div class="button">
+        <a href="http://localhost:8080/Tcs/login/login.html">Log Out</a>
+    </div>
+
+    <div id="map"></div>
+    <div id="main-panel">
+        <div>
+            <b>Start:</b>
+            
+            <select id="start">
+				<option value="New Delhi Railway Station, Bhavbhuti Marg">New Delhi Railway Station, Bhavbhuti Marg</option>
+                <option value="Gandhi Smriti">Gandhi Smriti</option>
+                <option value="India Gate">India Gate</option>
+                <option value="Rashtrapati Bhavan">Rashtrapati Bhavan</option>
+                <option value="Qutub Minar">Qutub Minar</option>
+                <option value="Lotus Temple">Lotus Temple</option>
+                <option value="Akshardham Temple">Akshardham Temple</option>
+              </select>
+
+            <b>Waypoints:</b> <br />
+            <select multiple id="waypoints">
+				<option value="Gandhi Smriti">Gandhi Smriti</option>
+                <option value="India Gate">India Gate</option>
+                <option value="Rashtrapati Bhavan">Rashtrapati Bhavan</option>
+                <option value="Qutub Minar">Qutub Minar</option>
+                <option value="Lotus Temple">Lotus Temple</option>
+                <option value="Akshardham Temple">Akshardham Temple</option>
+              </select>
+
+            <b>End:</b>
+            <select id="end">
+				<option value="New Delhi Railway Station, Bhavbhuti Marg">New Delhi Railway Station, Bhavbhuti Marg</option>
+                <option value="Gandhi Smriti">Gandhi Smriti</option>
+                <option value="India Gate">India Gate</option>
+                <option value="Rashtrapati Bhavan">Rashtrapati Bhavan</option>
+                <option value="Qutub Minar">Qutub Minar</option>
+                <option value="Lotus Temple">Lotus Temple</option>
+                <option value="Akshardham Temple">Akshardham Temple</option>
+              </select>
+<div class="check">
+	<input type="submit" id="submit_btn" />
+</div>
+    
+        </div>
+        <div id="directions-route"></div>
+    </div>
+
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBAoKQLHah3tfC-Hq0ikM4np-LDwptN2Y&callback=initMap">
+    
+</script>
+  </body>
+</html>

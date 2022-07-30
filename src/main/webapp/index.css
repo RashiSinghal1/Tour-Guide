@@ -1,0 +1,80 @@
+@charset "ISO-8859-1";
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
+
+*{
+	margin: 0;
+	padding: 0;
+}
+
+.banner {
+	margin: 0px;
+	padding: 0px;
+	background-image: linear-gradient(rgba(0, 0, 0, 0.37),
+		rgba(3, 3, 3, 0.155)), url(5.jpg);
+	height: 100vh;
+	background-repeat: no-repeat;
+	background-attachment : fixed;
+	background-size: 100% 100%;
+} 
+
+.top1 {
+	width: 100%;
+	position: absolute;
+	top: 35%;
+	font-size: 40px;
+	text-align: center;
+	color: #ffffffe0;
+	letter-spacing: 2px;
+	text-shadow: 1px 6px 10px black;
+}
+
+.top3 {
+	width: 100%;
+	position: absolute;
+	top: 50%;
+	font-size: 30px;
+	text-align: center;
+	color: #ffffff9d;
+	letter-spacing: 2px;
+	text-shadow: 1px 6px 10px black;
+}
+
+
+.btns {
+	display: flex;
+	align-items: center;
+}
+
+.btns a {
+	
+	text-align: center;
+	height: 60px;
+	width: 250px;
+	display: block;
+	line-height: 60px;
+	border-radius: 30px;
+	color: #fff;
+	font-size: 18px;
+	text-transform: uppercase;
+	letter-spacing: 2px;
+	box-shadow: 1px 2px 20px rgba(0, 0, 0, 0.685);
+	text-decoration: none;
+}
+
+.btns a:first-child {
+	background: red;
+	margin-top: 32%;
+	margin-left: 31%;
+	text-decoration: none;
+	
+}
+
+.btns a:last-child {
+	background: red;
+	margin-top: 32%;
+	margin-left: 5%;
+}
+.btns a:hover{
+	background: #f5ce62;
+
+}
